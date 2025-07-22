@@ -25,6 +25,8 @@ INSTALLED_APPS = [
     'drf_yasg',
     'corsheaders',
     'django_celery_beat',
+    'users',
+    'habit',
 
 ]
 
@@ -86,7 +88,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Moscow'
 
 USE_I18N = True
 
@@ -155,10 +157,10 @@ CORS_ALLOW_ALL_ORIGINS = False
 # Настройки для Celery
 
 # URL-адрес брокера сообщений
-CELERY_BROKER_URL = 'redis://localhost:6379'
+CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL')
 
 # URL-адрес брокера результатов, также Redis
-CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+CELERY_RESULT_BACKEND = os.getenv('CELERY_RESULT_BACKEND')
 
 # Часовой пояс для работы Celery
 CELERY_TIMEZONE = TIME_ZONE
@@ -172,7 +174,9 @@ CELERY_TASK_TIME_LIMIT = 30 * 60
 # Настройки для Celery
 CELERY_BEAT_SCHEDULE = {
     'task-name': {
-        'task': 'myapp.tasks.my_task',  # Путь к задаче
-        'schedule': timedelta(minutes=10),  # Расписание выполнения задачи (например, каждые 10 минут)
+        'task': 'habit.tasks.reminder_to_follow_a_habit',  # Путь к задаче
+        'schedule': timedelta(minutes=30),  # Расписание выполнения задачи (например, каждые 10 минут)
     },
 }
+TELEGRAM_URL = os.getenv('TELEGRAM_URL')
+TELEGRAM_TOKEN = os.getenv('TELEGRAM_TOKEN')
