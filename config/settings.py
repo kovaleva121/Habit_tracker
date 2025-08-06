@@ -103,7 +103,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 AUTH_USER_MODEL = "users.User"
 
-
 # Настройка почтового сервиса
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.yandex.ru"
@@ -181,7 +180,6 @@ CELERY_BEAT_SCHEDULE = {
 }
 TELEGRAM_URL = os.getenv("TELEGRAM_URL")
 TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN")
-
 
 if "test" in sys.argv:
     DATABASES = {
