@@ -9,7 +9,7 @@ from habit.models import Habit
 @shared_task
 def reminder_to_follow_a_habit():
     """Отложенная задача, которая отправляет напоминание в tg"""
-    message = 'Пора выполнять привычку'
+    message = "Пора выполнять привычку"
     today = timezone.now().today().time()
     habits = Habit.objects.all()
     for habit in habits:

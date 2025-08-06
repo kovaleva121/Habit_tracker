@@ -8,6 +8,7 @@ class UserSerializer(ModelSerializer):
 
     class Meta:
         """Метаданные"""
+
         model = User
-        fields = ['id', 'email', 'phone', 'city', 'password']
-        read_only_fields = ['id']
+        fields = ["id", "email", "phone", "city", "password"]
+        read_only_fields = ["id"]

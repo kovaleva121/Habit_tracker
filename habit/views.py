@@ -1,4 +1,10 @@
-from rest_framework.generics import CreateAPIView, ListAPIView, UpdateAPIView, RetrieveAPIView, DestroyAPIView
+from rest_framework.generics import (
+    CreateAPIView,
+    ListAPIView,
+    UpdateAPIView,
+    RetrieveAPIView,
+    DestroyAPIView,
+)
 
 from habit.models import Habit
 from habit.paginators import HabitPagination
@@ -8,6 +14,7 @@ from habit.serializers import HabbitSerializer
 
 class HabitCreateApiView(CreateAPIView):
     """Контроллер для создания привычки"""
+
     queryset = Habit.objects.all()
     serializer_class = HabbitSerializer
 
@@ -18,6 +25,7 @@ class HabitCreateApiView(CreateAPIView):
 
 class HabitListApiView(ListAPIView):
     """Контроллер для просмотра списка привычек"""
+
     queryset = Habit.objects.all()
     serializer_class = HabbitSerializer
     pagination_class = HabitPagination
@@ -29,6 +37,7 @@ class HabitListApiView(ListAPIView):
 
 class HabitPublicListApiView(ListAPIView):
     """Контроллер для просмотра списка публичных привычек"""
+
     queryset = Habit.objects.all()
     serializer_class = HabbitSerializer
     pagination_class = HabitPagination
@@ -40,6 +49,7 @@ class HabitPublicListApiView(ListAPIView):
 
 class HabitUpdateApiView(UpdateAPIView):
     """Контроллер для обновления привычки"""
+
     queryset = Habit.objects.all()
     serializer_class = HabbitSerializer
     permission_classes = [IsOwner]
@@ -47,6 +57,7 @@ class HabitUpdateApiView(UpdateAPIView):
 
 class HabitRetrieveApiView(RetrieveAPIView):
     """Контроллер для изменения привычки"""
+
     queryset = Habit.objects.all()
     serializer_class = HabbitSerializer
     permission_classes = [IsPublicOrOwner]
@@ -54,6 +65,7 @@ class HabitRetrieveApiView(RetrieveAPIView):
 
 class HabitDestroyApiView(DestroyAPIView):
     """Контроллер для удаления привычки"""
+
     queryset = Habit.objects.all()
     serializer_class = HabbitSerializer
     permission_classes = [IsOwner]
