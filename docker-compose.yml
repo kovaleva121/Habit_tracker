@@ -1,13 +1,7 @@
 services:
   web:
-    build:
-      context: .
-      args:
-        - DEBUG=False
+    build: .
     command: bash -c "python manage.py migrate && python manage.py collectstatic --no-input && python manage.py runserver 0.0.0.0:8000"
-    environment:
-      - DEBUG=False
-
     env_file: .env
     volumes:
       - static_volume:/code/staticfiles
@@ -18,6 +12,8 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
+
+
   db:
     image: postgres:latest
     volumes:
@@ -28,9 +24,9 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}" ]
-      interval: 30s
-      timeout: 10s
-      retries: 5
+      interval: 3s
+      timeout: 3s
+      retries: 3
     ports:
       - "5432:5432"
   redis:
@@ -44,24 +40,31 @@ services:
       retries: 3
     ports:
       - "6379:6379"
+
+
   celery:
     build:
       context: .
       args:
-        - DEBUG=False
+        - DEBUG=True
     command: celery -A config worker --loglevel=info
     environment:
-      - DEBUG=False
+      - DEBUG=True
     volumes:
       - .:/code
     working_dir: /code
     env_file:
       - ./.env
+    depends_on:
+      web:
+        condition: service_healthy
+
+
   celery-beat:
     build:
       context: .
       args:
-        - DEBUG=False
+        - DEBUG=True
     command: celery -A config beat --loglevel=info
     volumes:
       - .:/code
@@ -69,13 +72,19 @@ services:
     working_dir: /code
     env_file:
       - ./.env
+
+
   nginx:
-    build: .
+    image: nginx:1.28-alpine
     ports:
-      - "8080:80"
+      - "80:80"
+    depends_on:
+      web:
+        condition: service_started
     volumes:
-      - static_volume:/code/staticfiles:ro
-      - ./nginx.conf:/etc/nginx/nginx.conf
+      - static_volume:/var/www/static/:ro
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+
 
 
 
